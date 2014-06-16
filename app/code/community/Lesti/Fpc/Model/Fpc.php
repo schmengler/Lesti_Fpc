@@ -108,6 +108,17 @@ class Lesti_Fpc_Model_Fpc extends Mage_Core_Model_Cache
     }
 
     /**
+     * Sets flag to invalidate lazy blocks in sessions
+     */
+    public function invalidateLazyBlocks()
+    {
+        Mage::helper('fpc')->getInvalidateLazyBlocksFlag()
+        	->setFlagData(time())
+            ->setState(1)
+            ->save();
+    }
+
+    /**
      * @return bool
      */
     public function isActive()

@@ -25,7 +25,8 @@ class Lesti_Fpc_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_REFRESH_ACTIONS = 'system/fpc/refresh_actions';
     const XML_PATH_MISS_URI_PARAMS = 'system/fpc/miss_uri_params';
     const LAYOUT_ELEMENT_CLASS = 'Mage_Core_Model_Layout_Element';
-
+    const FLAG_LAZY_BLOCKS_INVALIDATED = 'fpc_lazy_blocks_invalidated';
+    
     const REGISTRY_KEY_PARAMS = 'fpc_params';
 
     /**
@@ -251,4 +252,13 @@ class Lesti_Fpc_Helper_Data extends Mage_Core_Helper_Abstract
         $request->getRequestedActionName();
     }
 
+    /**
+     * @return Mage_Core_Model_Flag
+     */
+    public function getInvalidateLazyBlocksFlag()
+    {
+        return Mage::getModel('core/flag')
+        		->setFlagCode(self::FLAG_LAZY_BLOCKS_INVALIDATED)
+        		->loadSelf();
+    }
 }

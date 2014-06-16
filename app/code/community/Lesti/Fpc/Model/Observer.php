@@ -36,6 +36,14 @@ class Lesti_Fpc_Model_Observer
     public function controllerActionLayoutGenerateBlocksBefore($observer)
     {
         $fpc = $this->_getFpc();
+
+        //TODO determine SESSION_AGE
+        $flag = Mage::helper('fpc')->getInvalidateLazyBlocksFlag();
+        if ($flag->getState() && SESSION_AGE < $flag->getFlagData()) {
+        	$session = Mage::getSingleton('customer/session');
+        	$session->setData(Lesti_Fpc_Helper_Block::LAZY_BLOCKS_VALID_SESSION_PARAM, false);
+        }
+        
         if ($fpc->isActive() &&
             !$this->_cached &&
             Mage::helper('fpc')->canCacheRequest()) {
@@ -326,6 +334,7 @@ class Lesti_Fpc_Model_Observer
     public function coreCleanCache($observer)
     {
         $this->_getFpc()->getFrontend()->clean(Zend_Cache::CLEANING_MODE_OLD);
+        $this->_getFpc()->invalidateLazyBlocks();
     }
 
     /**
@@ -341,5 +350,4 @@ class Lesti_Fpc_Model_Observer
             }
         }
     }
-
 }
